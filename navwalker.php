@@ -25,18 +25,21 @@
 
         public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 
-            $liClasses = 'navbar-item '.$item->title;
+            $liClasses = 'navbar-item '.$item->post_name;
 
             $hasChildren = $args->walker->has_children;
             $liClasses .= $hasChildren? " has-dropdown is-hoverable": "";
 
+
             if($hasChildren){
                 $output .= "<div class='".$liClasses."'>";
-                $output .= "\n<a class='navbar-link' href='".$item->url."'>".$item->title."</a>";
+                $output .= "\n<a class='navbar-link' href='".get_permalink($item->ID)."'>".$item->post_title."</a>";
             }
             else {
-                $output .= "<a class='".$liClasses."' href='".$item->url."'>".$item->title;
+                $output .= "<a class='".$liClasses."' href='".get_permalink($item->ID)."'>".$item->post_title;
             }
+
+            $item->classes = [];
 
             // Adds has_children class to the item so end_el can determine if the current element has children
             if ( $hasChildren ) {
@@ -45,7 +48,7 @@
         }
         
         public function end_el(&$output, $item, $depth = 0, $args = array(), $id = 0 ){
-
+            // var_dump($item);
             if(in_array("has_children", $item->classes)) {
 
                 $output .= "</div>";
